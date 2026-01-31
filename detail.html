@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>详情页</title>
+  <style>
+  /* 全局样式重置 */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Microsoft Yahei", sans-serif;
+    background-color: #f5f5f5;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  /* 功能标签样式 */
+  .func-tag {
+    text-align: center;
+    margin: 10px 0 20px;
+  }
+  .func-tag span {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 16px;
+  }
+
+  /* 车型logo展示区域 */
+  .model-logo-wrapper {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .model-logo {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 功能详情图区域 */
+  .detail-wrap {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .detail-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  .model-desc {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  /* 图片加载失败提示 */
+  .img-error {
+    text-align: center;
+    padding: 30px 0;
+    color: #666;
+    font-size: 14px;
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 600px) {
+    .page-title {
+      font-size: 20px;
+    }
+    .model-logo {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="page-title" id="pageTitle">详情页</h1>
+    <div class="func-tag"><span id="funcNameText">功能类型</span></div>
+    
+
+    <div class="detail-wrap">
+      <!-- 功能详情图（支持加载失败提示） -->
+      <div id="detailImgContainer">
+        <img id="detailImg" src="" alt="功能详情" class="detail-img">
+        <div class="img-error" style="display: none;">图片加载失败，请稍后重试</div>
+      </div>
+      <p class="model-desc" id="modelDesc">适配车型：</p>
+    </div>
+  </div>
+
+  <script>
+ 
+
+  // 2. 安全获取URL参数
+  function getUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      brandId: params.get('brandId') || '',
+      brandName: decodeURIComponent(params.get('brandName') || '未知品牌'),
+      funcType: params.get('funcType') || '',
+      funcName: decodeURIComponent(params.get('funcName') || '未知功能'),
+      modelName: decodeURIComponent(params.get('modelName') || '未知车型')
+    };
+  }
+
+  // 3. 生成详情图片路径（核心：精准匹配品牌+车型+功能）
+  function getDetailImageUrl(brandName, modelName, funcName) {
+    // 处理特殊字符（如“老A4/Q5”中的“/”改为“-”，避免目录错误）
+    const safeModelName = modelName.replace(/[\/:*?"<>|]/g, '-');
+    // 图片路径格式：/images/detail/品牌名/车型名-功能名.png
+    return `images/detail/${brandName}/${safeModelName}-${funcName}.png`;
+  }
+
+  // 4. 生成默认图片路径（兜底）
+  function getDefaultImageUrl(funcName) {
+    // 默认图格式：/images/detail/default/功能名-default.png
+    return `images/detail/${funcName}.png`;
+  }
+
+  // 5. 页面初始化
+  window.onload = function() {
+    const params = getUrlParams();
+    const { brandName, funcName, modelName } = params;
+
+    // 参数校验
+    if (!modelName || modelName === '未知车型') {
+      alert('参数错误，返回车型列表');
+      window.location.href = document.referrer || 'index.html';
+      return;
+    }
+
+    // 渲染基础信息
+    document.getElementById('funcNameText').textContent = funcName;
+    document.getElementById('modelDesc').textContent = `适配车型：${modelName}`;
+    document.getElementById('pageTitle').textContent = `${modelName}${funcName}详情`;
+    document.title = `${modelName}${funcName} - 详情`;
+
+        // 加载功能详情图（核心逻辑）
+    const detailImgEl = document.getElementById('detailImg');
+    const imgErrorEl = document.querySelector('.img-error');
+    const imgUrl = getDetailImageUrl(brandName, modelName, funcName);
+    const defaultImgUrl = getDefaultImageUrl(funcName);
+
+    // 尝试加载精准匹配的图片
+    detailImgEl.src = imgUrl;
+
+    // 图片加载失败时的兜底逻辑
+    detailImgEl.onerror = function() {
+      // 第一次失败：尝试加载品牌+功能的默认图
+      this.src = defaultImgUrl;
+      // 第二次失败：显示错误提示
+      this.onerror = function() {
+        detailImgEl.style.display = 'none';
+        imgErrorEl.style.display = 'block';
+      };
+    };
+  };
+  </script>
+</body>
+</html>
