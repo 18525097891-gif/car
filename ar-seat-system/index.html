@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>众赢汽车座椅系统-品牌列表</title>
+  <style>
+  /* 全局样式重置 */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    padding: 20px;
+    font-family: "Microsoft Yahei", sans-serif;
+    background-color: #f5f5f5;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+
+  /* 核心：九宫格布局样式 */
+  .brand-grid {
+    display: grid;
+    /* 关键：每行3列，实现九宫格；gap设置间距 */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+
+  /* 品牌项样式 */
+  .brand-item {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    /* 确保内容垂直居中 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 点击/hover效果 */
+  .brand-item:active, .brand-item:hover {
+    background-color: #f0f8ff;
+    transform: translateY(-2px);
+  }
+
+  /* 品牌logo样式 */
+  .brand-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+
+  /* 品牌名称样式 */
+  .brand-name {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+  }
+
+  /* 移动端适配：屏幕小于600px时改为2列 */
+  @media (max-width: 600px) {
+    .brand-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="page-title">汽车座椅舒适系统</h1>
+    <div class="brand-grid">
+      <!-- 第1行 -->
+      <div class="brand-item" onclick="goToFunction('1', '奥迪')">
+        <img src="images/brand/audi.jpeg" alt="奥迪" class="brand-logo">
+        <p class="brand-name">奥迪</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('2', '宝马')">
+        <img src="images/brand/bmw.jpeg" alt="宝马" class="brand-logo">
+        <p class="brand-name">宝马</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('3', '奔驰')">
+        <img src="images/brand/benz.jpeg" alt="奔驰" class="brand-logo">
+        <p class="brand-name">奔驰</p>
+      </div>
+      <!-- 第2行 -->
+      <div class="brand-item" onclick="goToFunction('4', '丰田')">
+        <img src="images/brand/toyota.jpeg" alt="丰田" class="brand-logo">
+        <p class="brand-name">丰田</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('5', '本田')">
+        <img src="images/brand/honda.jpeg" alt="本田" class="brand-logo">
+        <p class="brand-name">本田</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('6', '大众')">
+        <img src="images/brand/volkswagen.jpeg" alt="大众" class="brand-logo">
+        <p class="brand-name">大众</p>
+      </div>
+      <!-- 第3行 -->
+      <div class="brand-item" onclick="goToFunction('7', '日产尼桑')">
+        <img src="images/brand/nissan.jpeg" alt="日产尼桑" class="brand-logo">
+        <p class="brand-name">日产尼桑</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('8', '凯迪拉克')">
+        <img src="images/brand/cadillac.jpeg" alt="凯迪拉克" class="brand-logo">
+        <p class="brand-name">凯迪拉克</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('9', '路虎')">
+        <img src="images/brand/landrover.jpeg" alt="路虎" class="brand-logo">
+        <p class="brand-name">路虎</p>
+      </div>
+      <!-- 第4行（超出九宫格，自动按3列排列） -->
+      <div class="brand-item" onclick="goToFunction('10', '保时捷')">
+        <img src="images/brand/porsche.jpeg" alt="保时捷" class="brand-logo">
+        <p class="brand-name">保时捷</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('11', '特斯拉')">
+        <img src="images/brand/tesla.jpeg" alt="特斯拉" class="brand-logo">
+        <p class="brand-name">特斯拉</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('12', '哈弗')">
+        <img src="images/brand/haval.jpeg" alt="哈弗" class="brand-logo">
+        <p class="brand-name">哈弗</p>
+      </div>
+      <!-- 第5行 -->
+      <div class="brand-item" onclick="goToFunction('13', '别克')">
+        <img src="images/brand/buick.jpeg" alt="别克" class="brand-logo">
+        <p class="brand-name">别克</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('14', '马自达')">
+        <img src="images/brand/mazda.jpeg" alt="马自达" class="brand-logo">
+        <p class="brand-name">马自达</p>
+      </div>
+      <div class="brand-item" onclick="goToFunction('15', '现代')">
+        <img src="images/brand/hyundai.jpeg" alt="现代" class="brand-logo">
+        <p class="brand-name">现代</p>
+      </div>
+      <!-- 第6行 -->
+      <div class="brand-item" onclick="goToFunction('16', '广汽传祺')">
+        <img src="images/brand/cq.jpeg" alt="广汽传祺" class="brand-logo">
+        <p class="brand-name">广汽传祺</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // 跳转功能页，编码中文避免乱码
+  function goToFunction(brandId, brandName) {
+    const url = `function.html?brandId=${brandId}&brandName=${encodeURIComponent(brandName)}`;
+    window.location.href = url;
+  }
+  </script>
+</body>
+</html>
